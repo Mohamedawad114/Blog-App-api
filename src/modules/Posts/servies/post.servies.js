@@ -14,13 +14,15 @@ return res.status(201).json({message:'post shared'})}
 if(type=== 'image'){
 const imageFile = req.files?.image[0];
 if(!imageFile) return res.status(400).send(` NO files upload`)
-const shared=await post.create({blogId,content,type,userId})
+    const fileUrl=(`images/${imageFile.filename}`)
+const shared=await post.create({blogId,content,type,userId,fileUrl})
 return res.status(201).json({message:'post shared'})
     }
 if(type=== 'video'){
 const videoFile = req.files?.video[0];
 if(!videoFile) return res.status(400).send(` NO files upload`)
-const shared=await post.create({blogId,content,type,userId})
+    const fileUrl=(`videos/${videoFile.filename}`)
+const shared=await post.create({blogId,content,type,userId,fileUrl})
 return res.status(201).json({message:'post shared'})
     }
     return res.status(400).json({ message: 'Unsupported post type' })
@@ -60,7 +62,7 @@ export const allposts=asyncHandler(
         const page_num=req.query.page
         const limituser=5;
         const offest=(page_num-1)*limituser
-        const posts=await post.findAll({where:{blogId:blogId},attributes:{exclude:["blogId"]}},{limit:limituser,offset:offest})
+        const posts=await post.findAll({where:{blogId:blogId},attributes:{exclude:["blogId"]},limit:limituser,offset:offest})
         if(posts) return res.status(200).json({posts})
         return res.status(500).json({message:'something wrong'})
     }

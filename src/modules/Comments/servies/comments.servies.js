@@ -14,7 +14,8 @@ return res.status(201).json({message:'comment shared'})}
 if(type=== 'image'){
 const imageFile = req.file;
 if(!imageFile) return res.status(400).send(` NO files upload`)
-const shared=await comment.create({postId,content,type,userId:req.user.id})
+    const fileUrl=(`images/${imageFile.filename}`)
+const shared=await comment.create({postId,content,type,userId:req.user.id,fileUrl})
 return res.status(201).json({message:'comment shared'})
     }
     return res.status(400).json({ message: 'Unsupported comment type' })
